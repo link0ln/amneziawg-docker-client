@@ -1,109 +1,109 @@
 # AmneziaWG Client Docker Setup
 
-Docker-контейнер для клиентской части AmneziaWG с поддержкой обфускации трафика.
+Docker container for AmneziaWG client with traffic obfuscation support.
 
-## Структура файлов
+## File Structure
 
 ```
 .
-├── docker-compose.yml      # Конфигурация Docker Compose
-├── Dockerfile              # Сборка образа из исходников
-├── client.conf            # Ваш конфиг AmneziaWG (создайте сами)
-└── client.conf.example    # Пример конфигурации
+├── docker-compose.yml      # Docker Compose configuration
+├── Dockerfile              # Build image from sources
+├── client.conf            # Your AmneziaWG config (create yourself)
+└── client.conf.example    # Configuration example
 ```
 
-## Быстрый старт
+## Quick Start
 
-### 1. Создайте конфигурационный файл
+### 1. Create configuration file
 
 ```bash
 cp client.conf.example client.conf
-nano client.conf  # Отредактируйте под свои параметры
+nano client.conf  # Edit for your parameters
 ```
 
-### 2. Соберите и запустите контейнер
+### 2. Build and run the container
 
 ```bash
-# Сборка образа (может занять несколько минут)
+# Build image (may take several minutes)
 docker-compose build
 
-# Запуск контейнера
+# Run container
 docker-compose up -d
 
-# Просмотр логов
+# View logs
 docker-compose logs -f
 ```
 
-### 3. Проверка подключения
+### 3. Connection check
 
 ```bash
-# Статус интерфейса
+# Interface status
 docker exec amneziawg-client wg show
 
-# Проверка IP-адреса
+# Check IP address
 docker exec amneziawg-client ip addr show wg0
 
-# Проверка внешнего IP
+# Check external IP
 curl ifconfig.me
 ```
 
-## Управление
+## Management
 
 ```bash
-# Остановить контейнер
+# Stop container
 docker-compose down
 
-# Перезапустить
+# Restart
 docker-compose restart
 
-# Просмотр логов
+# View logs
 docker-compose logs -f amneziawg-client
 
-# Пересборка после изменений
+# Rebuild after changes
 docker-compose build --no-cache
 docker-compose up -d
 ```
 
-## Отладка
+## Debugging
 
-Для включения расширенного логирования измените в `docker-compose.yml`:
+To enable verbose logging, modify in `docker-compose.yml`:
 
 ```yaml
 environment:
   - LOG_LEVEL=debug
 ```
 
-## Особенности
+## Features
 
-- **Network mode: host** - контейнер использует сетевой стек хоста
-- **Автоматический запуск** - контейнер перезапускается при перезагрузке системы
-- **Обфускация трафика** - поддержка всех параметров AmneziaWG (Jc, Jmin, Jmax, S1, S2, H1-H4)
+- **Network mode: host** - container uses host network stack
+- **Automatic startup** - container restarts on system reboot
+- **Traffic obfuscation** - support for all AmneziaWG parameters (Jc, Jmin, Jmax, S1, S2, H1-H4)
 
-## Требования
+## Requirements
 
 - Docker 20.10+
 - Docker Compose 1.29+
-- Linux kernel с поддержкой TUN/TAP
+- Linux kernel with TUN/TAP support
 
-## Решение проблем
+## Troubleshooting
 
-### Контейнер не запускается
+### Container doesn't start
 
-Проверьте права доступа:
+Check permissions:
 ```bash
 chmod 600 client.conf
 ```
 
-### VPN подключается, но нет интернета
+### VPN connects but no internet
 
-Проверьте AllowedIPs в конфиге:
+Check AllowedIPs in config:
 ```
 AllowedIPs = 0.0.0.0/0, ::/0
 ```
 
-### Проблемы с DNS
+### DNS issues
 
-Добавьте в client.conf:
+Add to client.conf:
 ```
 DNS = 1.1.1.1, 8.8.8.8
 ```
