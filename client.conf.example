@@ -1,0 +1,22 @@
+[Interface]
+PrivateKey = YOUR_CLIENT_PRIVATE_KEY
+Address = 10.8.0.2/32
+DNS = 1.1.1.1
+
+# AmneziaWG specific parameters
+Jc = 4
+Jmin = 40
+Jmax = 70
+S1 = 10
+S2 = 20
+H1 = 1234567890
+H2 = 987654321
+H3 = 555555555
+H4 = 111111111
+
+[Peer]
+PublicKey = SERVER_PUBLIC_KEY
+PresharedKey = PRESHARED_KEY
+Endpoint = SERVER_IP:PORT
+AllowedIPs = 0.0.0.0/0, ::/0
+PersistentKeepalive = 25
